@@ -1,4 +1,4 @@
-# Web Tools
+# Django-Vue-Vite-Inertia-Template
 
 ## Choose a branch: basic or advanced (YOU ARE ON THE BASIC BRANCH)
 
