@@ -13,7 +13,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BACKEND_BASE_DIR = Path(__file__).resolve().parent.parent
+
+PROJECT_BASE_DIR = BACKEND_BASE_DIR.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-$ort8!vearwl_p4&s49%v92-5*m85)3bcdd(t%xhcb=l---esj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,17 +40,27 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party apps
+    'django_vite',
+    'inertia',
+
+    # Your apps
     'sample_app',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # <-- For serving static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'inertia.middleware.InertiaMiddleware',
+
+    # custom middleware below here
 ]
 
 ROOT_URLCONF = 'project_name.urls'
@@ -56,7 +68,9 @@ ROOT_URLCONF = 'project_name.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BACKEND_BASE_DIR / 'templates', # <-- Important to find base.html
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,7 +91,7 @@ WSGI_APPLICATION = 'project_name.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BACKEND_BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -113,12 +127,47 @@ USE_I18N = True
 USE_TZ = True
 
 
+# django-vite settings
+
+# Where ViteJS assets are built.
+VITE_BUILT_ASSETS_PATH = PROJECT_BASE_DIR / "frontend" / "dist"
+
+# Whether to use HMR or not. We follow Django's DEBUG mode
+DJANGO_VITE_DEV_MODE = DEBUG
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'				# static url prefix
+
+# where the static files will be collected to after running 'collectstatic'
+STATIC_ROOT = BACKEND_BASE_DIR / "staticfiles"
+
+MEDIA_URL = 'media/'				# media url prefix
+MEDIA_ROOT = 'media/'				# where media files will be stored
+
+# added -- list of extra paths where static files shoule be searched for
+STATICFILES_DIRS = [
+    BACKEND_BASE_DIR / "static",
+    VITE_BUILT_ASSETS_PATH,
+    VITE_BUILT_ASSETS_PATH / ".vite", # vite-build manifest.json is here
+
+    # vite dev assets paths
+    PROJECT_BASE_DIR / "frontend",
+    PROJECT_BASE_DIR / "frontend/public",
+    PROJECT_BASE_DIR / "frontend/public/static",
+    PROJECT_BASE_DIR / "frontend/src",
+    PROJECT_BASE_DIR / "frontend/src/static",    
+]
+
+# whitenoise settings
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Inertia settings
+INERTIA_LAYOUT = BACKEND_BASE_DIR / "templates/base.html"
