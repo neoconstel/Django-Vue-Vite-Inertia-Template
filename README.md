@@ -1,4 +1,9 @@
 # Django-Vue-Vite-Inertia-Template
+Inertia.js is a library that enables you to build modern single-page applications (SPAs) using Vue, React, or Svelte on the frontend, while relying on traditional server-side routing on the backend — without the need for a separate API layer like REST or GraphQL.
+
+Put simply, it allows seamless communication between your frontend and backend without writing APIs, making development faster and simpler for many use cases.
+
+This project demonstrates how to achieve this architecture using Vue.js + Vite on the frontend, Django on the backend, all connected through Inertia.js.
 
 ## Choose a branch: basic or advanced (YOU ARE IN THE ADVANCED BRANCH)
 
