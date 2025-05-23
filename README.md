@@ -1,6 +1,6 @@
 # Web Tools
 
-## Choose a branch: basic or advanced
+## Choose a branch: basic or advanced (YOU ARE ON THE BASIC BRANCH)
 
 This repository has two branches: basic and advanced. The 'basic' branch shows a basic working django+vueJs project using vite as a frontend build tool, and InertiaJs as an interface between the Vue frontend and the Django backend. The 'advanced' branch takes it a step further by showing a ready-to-use, scalable project structure for the Django backend and comes with core functionalities like custom User model, commands, and more to be included. At the frontend, it includes additional core packages/setups like pinia for state management, tailwindCSS, etc.
 
