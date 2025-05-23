@@ -26,13 +26,14 @@ const double = computed(() => count.value * 2);
     <p>Count: {{ count }}</p>
     <hr>
     <p>HelloWorld component:</p>
-    <HelloWorld msg="Vue components work too!" />
+    <HelloWorld message="Vue components work too!" />
     <hr>
     <h2>Test 3: Images</h2>
     <p>First image is within the public directory. Second image is within the
       src directory.</p>
-    <img width="200px" src="/Mavis.jpg" alt="Mavis from fairytail" title="Image within public directory" />
-    <img width="200px" src="@/assets/zeref_backview.jpg" alt="Vue Logo" title="Image within src directory" />
+    <img class="w-44 inline-block" src="/Mavis.jpg" alt="Mavis from fairytail" title="Image within public directory" />
+    <img class="w-44 inline-block" src="@/assets/zeref_backview.jpg" alt="Vue Logo"
+      title="Image within src directory" />
     <hr>
     <h2>Test 4: Inertia SPA Routing test</h2>
     <Link class="underline" href="/about">Click here to go to the About page for test 4 (inertia routing test)</Link>

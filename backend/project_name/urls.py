@@ -15,9 +15,35 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+
+# for serving media files while in development
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+# for staticfile configs
+from django.conf import settings
+
+# for loading the entry html template
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('sample_app.urls')),
+    path('', include('apps.home.urls')),
+]
+
+if settings.DEBUG:
+    # --------Serve static and media files from development server-------
+    # fixes issue of admin staticfiles missing when served from http://localhost
+    urlpatterns += staticfiles_urlpatterns()
+
+    # make it possible to use media_url in frontend to access backend media content
+    # (e.g <img src="http://localhost:8000/media/image/meg.jpg" alt="my image"/>)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    # include wagtail urls here if using wagtail
+
+    # This should be the VERY LAST! (for routung unknown urls to the frontend)
+    re_path(r'', TemplateView.as_view(template_name="base.html"))
 ]

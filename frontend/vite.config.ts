@@ -1,10 +1,12 @@
-import { fileURLToPath, URL } from "node:url";
+import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import vueDevTools from "vite-plugin-vue-devtools";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueDevTools from 'vite-plugin-vue-devtools'
+import tailwindcss from '@tailwindcss/vite' // <-----added for tailwindcss
 
-import { resolve } from "path"; // <-----added for inertia integration
+import { resolve } from 'path' // <-----added for inertia integration
 
 // https://vite.dev/config/
 /**
@@ -13,23 +15,23 @@ import { resolve } from "path"; // <-----added for inertia integration
  * root option being changed from the default ('.') to './src'
  */
 export default defineConfig({
-  root: resolve("./src"),
-  base: "/static/",
-  publicDir: resolve("./public"),
+  root: resolve('./src'),
+  base: '/static/',
+  plugins: [vue(), vueJsx(), vueDevTools(), tailwindcss()],
+  publicDir: resolve('./public'),
   build: {
-    outDir: resolve("./dist"),
-    assetsDir: "",
+    outDir: resolve('./dist'),
+    assetsDir: '',
     manifest: true,
     emptyOutDir: true,
     rollupOptions: {
       // Overwrite default .html entry to main.ts in the static directory
-      input: resolve("./src/main.ts"),
+      input: resolve('./src/main.ts'),
     },
   },
-  plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-});
+})

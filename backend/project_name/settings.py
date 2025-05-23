@@ -11,23 +11,27 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BACKEND_BASE_DIR = Path(__file__).resolve().parent.parent
 
 PROJECT_BASE_DIR = BACKEND_BASE_DIR.parent
+# Load environment variables from .env file
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$ort8!vearwl_p4&s49%v92-5*m85)3bcdd(t%xhcb=l---esj'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,17 +44,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third-party apps
     'django_vite',
     'inertia',
-
-    # Your apps
-    'sample_app',
+    
+    # makefile auto-renames each app's name to apps.<app_name> in apps.py
+    'apps.core',
+    'apps.home',
+    
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',   # <-- For serving static files in production
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -69,8 +75,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BACKEND_BASE_DIR / 'templates', # <-- Important to find base.html
-        ],
+            BACKEND_BASE_DIR / 'templates',
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,13 +132,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # django-vite settings
 
 # Where ViteJS assets are built.
 VITE_BUILT_ASSETS_PATH = PROJECT_BASE_DIR / "frontend" / "dist"
 
-# Whether to use HMR or not. We follow Django's DEBUG mode
+# If use HMR or not. We follow Django's DEBUG mode
 DJANGO_VITE_DEV_MODE = DEBUG
 
 
@@ -164,10 +169,16 @@ STATICFILES_DIRS = [
 # whitenoise settings
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+AUTH_USER_MODEL = 'core.User'		# use the custom user model
+
 # Inertia settings
 INERTIA_LAYOUT = BACKEND_BASE_DIR / "templates/base.html"
+
+

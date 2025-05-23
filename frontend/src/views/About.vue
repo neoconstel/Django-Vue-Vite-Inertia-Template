@@ -20,6 +20,6 @@ const double = computed(() => count.value * 2);
     <button @click="increment">Add</button>
     <p>Count: {{ count }}</p>
     <hr>
-    <Link href="/">Go back to Index</Link>
+    <Link class="underline" href="/">Go back to Index</Link>
   </div>
 </template>
